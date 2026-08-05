@@ -40,51 +40,10 @@ generate_key "$KEY_PERSONAL" "$PERSONAL_EMAIL"
 generate_key "$KEY_PERSONAL_2" "$PERSONAL_EMAIL_2"
 generate_key "$KEY_WORK" "$WORK_EMAIL"
 
-# 2. Configuration Hôtes GitHub/GitLab modulaires (~/.ssh/config.d/github.conf)
-log_info "Mise à jour de ~/.ssh/config.d/github.conf..."
-
-cat <<EOF > "$HOME/.ssh/config.d/github.conf"
-# 1. Clé Personnelle Principale ($PERSONAL_EMAIL)
-Host github-personal
-    HostName github.com
-    User git
-    IdentityFile ~/.ssh/id_ed25519_personal
-    IdentitiesOnly yes
-
-Host gitlab-personal
-    HostName gitlab.com
-    User git
-    IdentityFile ~/.ssh/id_ed25519_personal
-    IdentitiesOnly yes
-
-# 2. Clé Personnelle Secondaire / Sys ($PERSONAL_EMAIL_2)
-Host github-sys
-    HostName github.com
-    User git
-    IdentityFile ~/.ssh/id_ed25519_personal_sys
-    IdentitiesOnly yes
-
-Host gitlab-sys
-    HostName gitlab.com
-    User git
-    IdentityFile ~/.ssh/id_ed25519_personal_sys
-    IdentitiesOnly yes
-
-# 3. Clé Professionnelle ($WORK_EMAIL)
-Host github-work
-    HostName github.com
-    User git
-    IdentityFile ~/.ssh/id_ed25519_work
-    IdentitiesOnly yes
-
-Host gitlab-work
-    HostName gitlab.com
-    User git
-    IdentityFile ~/.ssh/id_ed25519_work
-    IdentitiesOnly yes
-EOF
-
-chmod 600 "$HOME/.ssh/config.d/github.conf"
+# 2. Déploiement du fichier d'hôtes GitHub/GitLab modulaire (SSOT, symlink)
+log_info "Déploiement de ~/.ssh/config.d/github.conf (symlink)..."
+DOTFILES_SSH_CONFD="$(cd "$SCRIPT_DIR/../../dotfiles/ssh/config.d" && pwd)"
+ln -sfn "$DOTFILES_SSH_CONFD/github.conf" "$HOME/.ssh/config.d/github.conf"
 
 # 3. Injection sécurisée et non-destructive de Include dans ~/.ssh/config
 DOTFILES_SSH="$SCRIPT_DIR/../../dotfiles/ssh/config"
