@@ -1,0 +1,16 @@
+services:
+  <service-name>:
+    image: <image>:<tag>
+    container_name: <service-name>
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ../volumes/<service-name>:/data
+    networks:
+      - infra
+    # ports:
+    #   - "<host-port>:<container-port>"
+
+networks:
+  infra:
+    external: true
