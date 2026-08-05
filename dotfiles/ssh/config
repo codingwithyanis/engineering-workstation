@@ -1,0 +1,7 @@
+# Inclusion modulaire des configurations d'hôtes
+Include ~/.ssh/config.d/*.conf
+
+Host *
+    AddKeysToAgent yes
+    ServerAliveInterval 60
+    ServerAliveCountMax 5

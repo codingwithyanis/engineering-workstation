@@ -1,0 +1,15 @@
+# Identité personnelle — générée localement depuis config/user.conf.example
+config/user.conf
+
+# Cache de complétion Zsh (régénéré automatiquement par compinit)
+dotfiles/zsh/.zcompdump*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.idea/
+.vscode/
+*.swp
+*.swo

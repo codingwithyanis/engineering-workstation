@@ -1,0 +1,15 @@
+# Identités Git & Préférences
+# Copie ce fichier vers user.conf puis remplis-le avec tes propres informations :
+#   cp config/user.conf.example config/user.conf
+# user.conf est ignoré par git (voir .gitignore) : tes données restent locales.
+
+PERSONAL_NAME="Prénom Nom"
+PERSONAL_EMAIL="perso@example.com"
+
+PERSONAL_NAME_2="Prénom Nom Sys"
+PERSONAL_EMAIL_2="perso-sys@example.com"
+
+WORK_NAME="Prénom Nom Work"
+WORK_EMAIL="work@example.com"
+
+DEFAULT_EDITOR="nvim"

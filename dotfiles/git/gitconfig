@@ -1,0 +1,50 @@
+[init]
+    defaultBranch = main
+
+[core]
+    excludesfile = ~/.gitignore_global
+    autocrlf = input
+
+[pull]
+    rebase = true
+
+[fetch]
+    prune = true
+
+# Signature des commits via SSH (Standard Moderne 2026)
+[gpg]
+    format = ssh
+
+[commit]
+    gpgsign = true
+
+# Module Delta
+[include]
+    path = ~/.config/git/delta.gitconfig
+
+# Inclusions conditionnelles basées sur ~/Workspace/
+[includeIf "gitdir:~/Workspace/personal/"]
+    path = ~/.gitconfig-personal
+
+[includeIf "gitdir:~/Workspace/sys/"]
+    path = ~/.gitconfig-sys
+
+[includeIf "gitdir:~/Workspace/work/"]
+    path = ~/.gitconfig-work
+
+# Aliases d'Ingénierie Avancés
+[alias]
+    st = status -sb
+    co = checkout
+    br = branch
+    cm = commit -m
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    graph = log --graph --oneline --decorate --all
+    undo = reset --soft HEAD~1
+    amend = commit --amend --no-edit
+    fixup = commit --fixup
+    cleanup = "!git branch --merged | grep -E -v '(*|main|master|dev)' | xargs -r git branch -d"
+    aliases = config --get-regexp ^alias\\.
+    wip = "!git add -A && git commit -m 'wip'"
+    sync = "!git pull --rebase && git push"
+    stash-all = stash --include-untracked

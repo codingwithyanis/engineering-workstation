@@ -1,0 +1,45 @@
+# Operating System
+.DS_Store
+.DS_Store?
+Thumbs.db
+
+# IDEs & Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*.iml
+.idea_modules/
+
+# Secrets & Environment
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+.envrc
+.direnv/
+
+# Runtimes & Build Artifacts
+node_modules/
+vendor/
+target/
+.mvn/
+dist/
+build/
+.next/
+.nuxt/
+.cache/
+coverage/
+coverage-final.json
+
+# DevOps & Infra
+.vagrant/
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+
+# Logs
+*.log
+*.pid
