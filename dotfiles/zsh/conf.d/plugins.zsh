@@ -1,6 +1,6 @@
-# Chargement d'Antidote
-ANTIDOTE_DIR="${ZDOTDIR:-$HOME}/.antidote"
-if [ -d "$ANTIDOTE_DIR" ]; then
-    source "$ANTIDOTE_DIR/antidote.zsh"
-    antidote load "${ZDOTDIR:-$HOME/.config/zsh}/plugins.txt"
-fi
+fpath+=( "$HOME/.cache/antidote/github.com/zsh-users/zsh-syntax-highlighting" )
+source "$HOME/.cache/antidote/github.com/zsh-users/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
+fpath+=( "$HOME/.cache/antidote/github.com/zsh-users/zsh-autosuggestions" )
+source "$HOME/.cache/antidote/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"
+fpath+=( "$HOME/.cache/antidote/github.com/zsh-users/zsh-completions" )
+source "$HOME/.cache/antidote/github.com/zsh-users/zsh-completions/zsh-completions.plugin.zsh"

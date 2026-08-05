@@ -5,7 +5,7 @@ source "$SCRIPT_DIR/../../lib/common.sh"
 
 log_header "Phase 2.2 - Installation d'Antidote"
 
-ANTIDOTE_DIR="${ZDOTDIR:-$HOME}/.antidote"
+ANTIDOTE_DIR="$HOME/.antidote"
 
 if [ ! -d "$ANTIDOTE_DIR" ]; then
     log_info "Clonage d'Antidote..."
