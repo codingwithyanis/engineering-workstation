@@ -14,6 +14,7 @@ cat <<EOF > "$GITCONFIG_DIR/.gitconfig-personal"
 [user]
     name = "$PERSONAL_NAME"
     email = $PERSONAL_EMAIL
+    signingkey = ~/.ssh/id_ed25519_personal.pub
 EOF
 
 # 2. Profil 2 : Personnel / Sys (Gmail)
@@ -21,6 +22,7 @@ cat <<EOF > "$GITCONFIG_DIR/.gitconfig-sys"
 [user]
     name = "$PERSONAL_NAME_2"
     email = $PERSONAL_EMAIL_2
+    signingkey = ~/.ssh/id_ed25519_personal_sys.pub
 EOF
 
 # 3. Profil 3 : Professionnel (OTRIS)
@@ -28,9 +30,18 @@ cat <<EOF > "$GITCONFIG_DIR/.gitconfig-work"
 [user]
     name = "$WORK_NAME"
     email = $WORK_EMAIL
+    signingkey = ~/.ssh/id_ed25519_work.pub
 EOF
 
 log_success "Profils d'identité Personal, Sys et Work générés."
+
+# 4. Fichier des signataires autorisés (vérification locale des commits signés SSH)
+log_info "Génération de ~/.ssh/allowed_signers (vérification locale des signatures SSH)..."
+{
+    echo "$PERSONAL_EMAIL $(awk '{print $1, $2}' ~/.ssh/id_ed25519_personal.pub)"
+    echo "$PERSONAL_EMAIL_2 $(awk '{print $1, $2}' ~/.ssh/id_ed25519_personal_sys.pub)"
+    echo "$WORK_EMAIL $(awk '{print $1, $2}' ~/.ssh/id_ed25519_work.pub)"
+} > "$HOME/.ssh/allowed_signers"
 
 # 4. Le dépôt reste l'unique source de vérité : ~/.gitconfig, ~/.gitignore_global
 #    et le module Delta sont déployés par lien symbolique, pas régénérés.

@@ -59,4 +59,18 @@ check_git_identity "$HOME/Workspace/personal" "$PERSONAL_EMAIL"
 check_git_identity "$HOME/Workspace/sys" "$PERSONAL_EMAIL_2"
 check_git_identity "$HOME/Workspace/work" "$WORK_EMAIL"
 
+# 4. Vérification de la signature SSH des commits
+log_info "--- 4. Vérification de la signature SSH ---"
+EXPECTED_GITCONFIG="$(cd "$SCRIPT_DIR/../../dotfiles/git" && pwd)/gitconfig"
+if [ "$(readlink -f "$HOME/.gitconfig")" = "$EXPECTED_GITCONFIG" ]; then
+    log_success "~/.gitconfig correctement symlinké (SSOT)"
+else
+    log_info "[ATTENTION] ~/.gitconfig n'est pas symlinké vers dotfiles/git/gitconfig !"
+fi
+if [ -f "$HOME/.ssh/allowed_signers" ]; then
+    log_success "~/.ssh/allowed_signers présent (vérification locale des signatures)"
+else
+    log_info "[ATTENTION] ~/.ssh/allowed_signers manquant !"
+fi
+
 log_success "Validation terminée !"
