@@ -24,4 +24,16 @@ if [ -f "$DOTFILES_SRC/starship.toml" ]; then
     ln -sf "$DOTFILES_SRC/starship.toml" "$HOME/.config/starship.toml"
 fi
 
+# 4. Lien symbolique du dossier nvim entier (kickstart.nvim)
+if [ -d "$DOTFILES_SRC/nvim" ]; then
+    log_info "Création du lien symbolique pour ~/.config/nvim -> $DOTFILES_SRC/nvim"
+    ln -sfn "$DOTFILES_SRC/nvim" "$HOME/.config/nvim"
+fi
+
+# 5. Lien symbolique du dossier wezterm entier
+if [ -d "$DOTFILES_SRC/wezterm" ]; then
+    log_info "Création du lien symbolique pour ~/.config/wezterm -> $DOTFILES_SRC/wezterm"
+    ln -sfn "$DOTFILES_SRC/wezterm" "$HOME/.config/wezterm"
+fi
+
 log_success "Le dépôt Git est désormais l'unique source de vérité (SSOT) des dotfiles."

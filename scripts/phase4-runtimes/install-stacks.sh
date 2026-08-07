@@ -11,4 +11,10 @@ eval "$(mise env -s bash)"
 log_info "Installation de l'ensemble des stacks configurées..."
 mise install --verbose
 
+# Installation de tree-sitter-cli (requis par nvim-treesitter pour compiler les parsers, cf. kickstart.nvim)
+if ! command_exists tree-sitter; then
+    log_info "Installation de tree-sitter-cli (npm global)..."
+    npm install -g tree-sitter-cli
+fi
+
 log_success "Provisionnement de la Phase 4 terminé !"

@@ -37,14 +37,18 @@ $EDITOR config/user.conf   # renseigne tes identités (noms, emails perso/sys/tr
 | Phase | Dossier | Contenu |
 |---|---|---|
 | 1 — Système & Fondations | `scripts/phase1/` | Audit système, mise à jour APT, dépôt de clés GPG moderne (`/etc/apt/keyrings`), paquets de compilation de base, locale UTF-8, arborescence `~/Workspace` et `~/Infrastructure` |
-| 2 — Shell & Dotfiles | `scripts/phase2-shell/` | Zsh comme shell par défaut, Antidote (plugin manager), Starship (prompt), Atuin (historique), CLI modernes, déploiement des dotfiles par symlink |
+| 2 — Shell & Dotfiles | `scripts/phase2-shell/` | Zsh comme shell par défaut, Antidote (plugin manager), Starship (prompt), Atuin (historique), CLI modernes, Neovim (binaire officiel ≥ 0.12, requis par la config `kickstart.nvim`), herdr, déploiement des dotfiles par symlink (zsh, starship, nvim, wezterm) |
 | 3 — Git, SSH & Identités | `scripts/phase3-git/` | Delta, Lazygit, GitHub CLI, 3 identités SSH ed25519 (personnelle / sys / travail) avec config modulaire, résolution automatique de l'identité Git selon le dossier de travail |
-| 4 — Runtimes | `scripts/phase4-runtimes/` | `mise` comme gestionnaire de versions polyglotte, provisionnement déclaratif depuis `config/versions.env` |
+| 4 — Runtimes | `scripts/phase4-runtimes/` | `mise` comme gestionnaire de versions polyglotte, provisionnement déclaratif depuis `config/versions.env`, `tree-sitter-cli` (npm global, requis pour compiler les parsers Neovim) |
 | 5 — Docker & Infrastructure | `scripts/phase5-docker/` | Docker CE, Buildx, Compose, LazyDocker, daemon tuné (BuildKit, log driver local), arborescence pour services auto-hébergés |
 
 ## Outils installés
 
-**Shell & CLI** : zsh, Antidote, Starship, Atuin, ripgrep, fd, bat, eza, zoxide, btop, fastfetch, jq, yq, tree, direnv, fzf, neovim
+**Shell & CLI** : zsh, Antidote, Starship, Atuin, ripgrep, fd, bat, eza, zoxide, btop, fastfetch, jq, yq, tree, direnv, fzf, herdr
+
+**Éditeur** : Neovim (binaire officiel ≥ 0.12, requis par `vim.pack` — voir [Configuration Neovim](#configuration-neovim))
+
+**Terminal** : WezTerm (config seule — le binaire n'est pas installé par ce dépôt, voir [Configuration WezTerm](#configuration-wezterm))
 
 **Git & VCS** : git, delta, lazygit, gh (GitHub CLI)
 
@@ -62,6 +66,54 @@ Trois identités (personnelle, personnelle-sys, travail) sont configurées de fa
 
 La signature des commits se fait via clé SSH (`gpg.format = ssh`), et l'affichage des diffs passe par `delta`.
 
+## Configuration Neovim
+
+`dotfiles/nvim/` est basé sur [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim), déployé par symlink sur `~/.config/nvim`. Un seul `init.lua` lisible de bout en bout, pas de framework opaque à contourner.
+
+**Gestionnaire de plugins** : `vim.pack`, natif à Neovim depuis la 0.12 (pas de `lazy.nvim`). C'est pour ça que le binaire officiel est requis en Phase 2 — la version des dépôts Ubuntu (0.11) ne l'a pas.
+
+**Thème** : `rose-pine` (variante moon), cohérent avec WezTerm et herdr.
+
+**Langages avec LSP + complétion + formatage + lint** :
+
+| Langage | LSP | Formateur | Lint |
+|---|---|---|---|
+| Lua | `lua_ls` | `stylua` | — |
+| Python | `pyright` (types) | `ruff_format` | `ruff` (LSP) |
+| Rust | `rust_analyzer` | `rustfmt` (via cargo) | — |
+| Java | `jdtls` | `google-java-format` | — |
+| PHP | `intelephense` | `php_cs_fixer` | — |
+| TypeScript/JavaScript | `ts_ls` (types) | `prettierd`/`prettier` | `eslint` (LSP) |
+
+Tous les serveurs et formateurs sont installés automatiquement par `mason.nvim` au premier démarrage (sauf `rustfmt`, fourni par la toolchain Rust). Format-on-save actif pour tous les langages ci-dessus. `<leader>F` pour formater manuellement.
+
+**Plugins principaux** :
+
+| Rôle | Plugin |
+|---|---|
+| Fuzzy finder | `telescope.nvim` + `ripgrep` |
+| Explorateur de fichiers (buffer) | `oil.nvim` (`<leader>e`) |
+| Explorateur de fichiers (panneau) | `neo-tree.nvim` (`<leader>E` ou `\`) |
+| Tabs des buffers ouverts | `bufferline.nvim` (`<S-h>`/`<S-l>`) |
+| Git UI | `neogit` + `diffview.nvim` (`<leader>g`), blame inline via `gitsigns.nvim` |
+| Panneau diagnostics | `trouble.nvim` (`<leader>xx`) |
+| Indent guides | `indent-blankline.nvim` |
+| Autopairs | `nvim-autopairs` |
+| Multi-curseur | `vim-visual-multi` (`<C-n>`) |
+| Sessions | `mini.sessions` (`<leader>Ss`/`<leader>Sl`) |
+| Terminal flottant | `snacks.nvim` (`<leader>tt`) |
+| Dashboard | `snacks.nvim` |
+| Complétion | `blink.cmp` + `LuaSnip` |
+| Coloration syntaxique | `nvim-treesitter` |
+
+## Configuration WezTerm
+
+`dotfiles/wezterm/wezterm.lua`, déployé par symlink sur `~/.config/wezterm`. Le binaire WezTerm lui-même n'est pas installé par ce dépôt (pas de gestionnaire de paquets standard fiable pour tous les cas — Flatpak, binaire officiel, etc. selon la machine).
+
+- Thème `Rosé Pine (base16)`, police `FantasqueSansM Nerd Font Mono`
+- `initial_cols`/`initial_rows` réduits (130×35), pas d'opacité de fenêtre
+- Barre d'onglets "fancy" activée, décorations de fenêtre en mode `TITLE`
+
 ## Structure du dépôt
 
 ```
@@ -76,6 +128,8 @@ engineering-workstation/
 │   ├── git/                  # gitconfig, gitignore global, config delta
 │   ├── ssh/                  # config SSH modulaire (Include config.d/*.conf)
 │   ├── starship.toml
+│   ├── nvim/                 # init.lua (kickstart.nvim + vim.pack) -> ~/.config/nvim
+│   ├── wezterm/              # wezterm.lua -> ~/.config/wezterm
 │   └── zsh/                  # .zshrc + modules conf.d/*.zsh + alias/*.zsh
 └── scripts/
     ├── phase1/ ... phase5-docker/
