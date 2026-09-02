@@ -13,6 +13,12 @@ if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init zsh)"
 fi
 
+# Raccourcis fzf : Ctrl+T (fichiers) et Alt+C (répertoires).
+# Atuin est chargé ensuite afin de conserver Ctrl+R pour son historique.
+if command -v fzf >/dev/null 2>&1; then
+    source <(fzf --zsh)
+fi
+
 # Initialisation d'Atuin
 if command -v atuin >/dev/null 2>&1; then
     eval "$(atuin init zsh --disable-up-arrow)"

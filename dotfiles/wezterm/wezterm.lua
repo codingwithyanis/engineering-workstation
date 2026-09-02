@@ -4,19 +4,19 @@ local config = wezterm.config_builder()
 -- Apparence
 config.color_scheme = "Rosé Pine (base16)"
 config.font = wezterm.font_with_fallback({
-	"FantasqueSansM Nerd Font Mono",
-	"JetBrains Mono",
+	{ family = "JetBrainsMono Nerd Font Mono", weight = "Medium" },
 })
-config.font_size = 12.0
-config.window_decorations = "TITLE"
+config.font_size = 10.0
+config.line_height = 0.95
+config.window_decorations = "TITLE | RESIZE"
 config.window_padding = {
 	left = 8,
 	right = 8,
 	top = 8,
 	bottom = 8,
 }
-config.initial_cols = 130
-config.initial_rows = 35
+config.initial_cols = 150
+config.initial_rows = 45
 
 -- Comportement
 config.scrollback_lines = 10000

@@ -1,3 +1,8 @@
+# Les complétions tierces doivent être présentes dans fpath avant compinit.
+if [[ -d "$HOME/.cache/antidote/github.com/zsh-users/zsh-completions/src" ]]; then
+  fpath+=( "$HOME/.cache/antidote/github.com/zsh-users/zsh-completions/src" )
+fi
+
 # Complétion avancée Zsh avec cache
 autoload -Uz compinit
 if [ $(date +'%j') != $(stat -c '%y' ~/.zcompdump 2>/dev/null | date +'%j') ]; then

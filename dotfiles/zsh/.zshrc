@@ -4,3 +4,11 @@ export ZDOTDIR="$HOME/.config/zsh"
 for file in "$ZDOTDIR"/conf.d/*.zsh; do
     [ -r "$file" ] && source "$file"
 done
+
+# pnpm
+export PNPM_HOME="/home/yanis/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

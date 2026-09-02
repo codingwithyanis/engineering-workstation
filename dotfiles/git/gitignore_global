@@ -43,3 +43,5 @@ coverage-final.json
 # Logs
 *.log
 *.pid
+
+**/.claude/settings.local.json

@@ -72,47 +72,42 @@ La signature des commits se fait via clé SSH (`gpg.format = ssh`), et l'afficha
 
 **Gestionnaire de plugins** : `vim.pack`, natif à Neovim depuis la 0.12 (pas de `lazy.nvim`). C'est pour ça que le binaire officiel est requis en Phase 2 — la version des dépôts Ubuntu (0.11) ne l'a pas.
 
-**Thème** : `rose-pine` (variante moon), cohérent avec WezTerm et herdr.
+**Thème** : `kanagawa.nvim` (variante wave), une palette sombre et contrastée.
 
-**Langages avec LSP + complétion + formatage + lint** :
+**Langages avec LSP + complétion** :
 
-| Langage | LSP | Formateur | Lint |
-|---|---|---|---|
-| Lua | `lua_ls` | `stylua` | — |
-| Python | `pyright` (types) | `ruff_format` | `ruff` (LSP) |
-| Rust | `rust_analyzer` | `rustfmt` (via cargo) | — |
-| Java | `jdtls` | `google-java-format` | — |
-| PHP | `intelephense` | `php_cs_fixer` | — |
-| TypeScript/JavaScript | `ts_ls` (types) | `prettierd`/`prettier` | `eslint` (LSP) |
+| Langage | LSP |
+|---|---|
+| Java | `jdtls` |
+| PHP | `intelephense` |
+| TypeScript / JavaScript | `ts_ls` |
+| Lua | `lua_ls` |
+| HTML | `html` |
 
-Tous les serveurs et formateurs sont installés automatiquement par `mason.nvim` au premier démarrage (sauf `rustfmt`, fourni par la toolchain Rust). Format-on-save actif pour tous les langages ci-dessus. `<leader>F` pour formater manuellement.
+La configuration réutilise les exécutables déjà installés par Mason, sans charger Mason au démarrage. Le formatage manuel est disponible avec `<leader>fm`.
 
 **Plugins principaux** :
 
 | Rôle | Plugin |
 |---|---|
-| Fuzzy finder | `telescope.nvim` + `ripgrep` |
-| Explorateur de fichiers (buffer) | `oil.nvim` (`<leader>e`) |
-| Explorateur de fichiers (panneau) | `neo-tree.nvim` (`<leader>E` ou `\`) |
-| Tabs des buffers ouverts | `bufferline.nvim` (`<S-h>`/`<S-l>`) |
-| Git UI | `neogit` + `diffview.nvim` (`<leader>g`), blame inline via `gitsigns.nvim` |
-| Panneau diagnostics | `trouble.nvim` (`<leader>xx`) |
-| Indent guides | `indent-blankline.nvim` |
+| Thème et statusline | `kanagawa.nvim` + `lualine.nvim` |
+| Navigation, recherche et explorateur | `snacks.nvim` |
+| Diagnostics | `tiny-inline-diagnostic.nvim` |
 | Autopairs | `nvim-autopairs` |
-| Multi-curseur | `vim-visual-multi` (`<C-n>`) |
-| Sessions | `mini.sessions` (`<leader>Ss`/`<leader>Sl`) |
-| Terminal flottant | `snacks.nvim` (`<leader>tt`) |
-| Dashboard | `snacks.nvim` |
-| Complétion | `blink.cmp` + `LuaSnip` |
+| Complétion | `blink.cmp` |
+| Sauts rapides | `leap.nvim` |
 | Coloration syntaxique | `nvim-treesitter` |
+
+**Raccourcis principaux** : `<leader>ff` fichiers, `<leader>fg` recherche texte, `<leader>fb` buffers, `<leader>fd` diagnostics, `<leader>fe` explorateur, `<leader>fm` formatage, `gd` définition, `gr` références, `s`/`S` Leap et `<leader>lg` LazyGit.
 
 ## Configuration WezTerm
 
 `dotfiles/wezterm/wezterm.lua`, déployé par symlink sur `~/.config/wezterm`. Le binaire WezTerm lui-même n'est pas installé par ce dépôt (pas de gestionnaire de paquets standard fiable pour tous les cas — Flatpak, binaire officiel, etc. selon la machine).
 
-- Thème `Rosé Pine (base16)`, police `FantasqueSansM Nerd Font Mono`
-- `initial_cols`/`initial_rows` réduits (130×35), pas d'opacité de fenêtre
-- Barre d'onglets "fancy" activée, décorations de fenêtre en mode `TITLE`
+- Thème `Rosé Pine (base16)`, police `JetBrainsMono Nerd Font Mono Medium`
+- Taille de police `10`, interligne `0.95`
+- Fenêtre initiale de 150×45, pas d'opacité de fenêtre
+- Barre d'onglets "fancy" activée, décorations de fenêtre en mode `TITLE | RESIZE`
 
 ## Structure du dépôt
 
