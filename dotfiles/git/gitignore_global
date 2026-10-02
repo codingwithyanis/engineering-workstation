@@ -45,3 +45,5 @@ coverage-final.json
 *.pid
 
 **/.claude/settings.local.json
+
+**/.claude/.cc-writes/
