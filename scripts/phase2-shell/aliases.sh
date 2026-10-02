@@ -6,7 +6,7 @@ source "$SCRIPT_DIR/../../lib/common.sh"
 log_header "Phase 2.7 - Validation de la configuration des Alias & Fonctions"
 
 ALIASES_DIR="$HOME/.config/zsh/aliases"
-FUNCTIONS_FILE="$HOME/.config/zsh/conf.d/functions.zsh"
+FUNCTIONS_FILE="$HOME/.config/zsh/conf.d/00-environment.zsh"
 
 if [ -d "$ALIASES_DIR" ] && [ -n "$(find "$ALIASES_DIR" -maxdepth 1 -name '*.zsh' -print -quit)" ]; then
     log_success "Modules d'alias détectés dans $ALIASES_DIR."

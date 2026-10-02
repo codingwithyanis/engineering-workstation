@@ -9,9 +9,8 @@ log_header "Phase 3.2 - Clés SSH & Structure Modulaire Include (3 Identités)"
 ensure_dir "$HOME/.ssh/config.d"
 chmod 700 "$HOME/.ssh" "$HOME/.ssh/config.d"
 
-# Chemins des 3 clés SSH
+# Chemins des clés SSH
 KEY_PERSONAL="$HOME/.ssh/id_ed25519_personal"
-KEY_PERSONAL_2="$HOME/.ssh/id_ed25519_personal_sys"
 KEY_WORK="$HOME/.ssh/id_ed25519_work"
 
 # Option passphrase interactive ou automatique via flag
@@ -35,9 +34,8 @@ generate_key() {
     fi
 }
 
-# 1. Génération des 3 clés
+# 1. Génération des clés
 generate_key "$KEY_PERSONAL" "$PERSONAL_EMAIL"
-generate_key "$KEY_PERSONAL_2" "$PERSONAL_EMAIL_2"
 generate_key "$KEY_WORK" "$WORK_EMAIL"
 
 # 2. Déploiement du fichier d'hôtes GitHub/GitLab modulaire (SSOT, symlink)
@@ -53,7 +51,12 @@ if [ ! -f "$HOME/.ssh/config" ]; then
 elif ! grep -q "config.d" "$HOME/.ssh/config"; then
     log_info "Sauvegarde de ~/.ssh/config vers ~/.ssh/config.bak"
     cp "$HOME/.ssh/config" "$HOME/.ssh/config.bak"
-    echo -e "Include ~/.ssh/config.d/*.conf\n\n$(cat $HOME/.ssh/config)" > "$HOME/.ssh/config"
+    {
+        printf '%s\n\n' 'Include ~/.ssh/config.d/*.conf'
+        cat "$HOME/.ssh/config"
+    } > "$HOME/.ssh/config.tmp"
+    mv "$HOME/.ssh/config.tmp" "$HOME/.ssh/config"
+    chmod 600 "$HOME/.ssh/config"
 fi
 
 log_success "SSH multi-comptes configuré avec succès pour 3 identités."

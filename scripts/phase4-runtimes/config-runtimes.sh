@@ -26,9 +26,11 @@ gradle = "$GRADLE_VERSION"
 
 python = "$PYTHON_VERSION"
 uv = "$UV_VERSION"
-
-rust = "$RUST_VERSION"
-go = "$GO_VERSION"
+php = [
+    "$PHP_LTS",
+    "$PHP_CURRENT"
+]
+composer = "$COMPOSER_VERSION"
 
 [settings]
 experimental = true

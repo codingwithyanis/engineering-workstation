@@ -3,7 +3,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../../lib/common.sh"
 
-log_header "Phase 5.2 - Configuration Avancée du Daemon & Workspace Infrastructure"
+log_header "Phase 5.2 - Configuration Avancée du Daemon Docker"
 
 log_info "Configuration des groupes d'accès..."
 sudo groupadd -f docker
@@ -34,24 +34,6 @@ cat <<'USER_CONFIG' > "$HOME/.docker/config.json"
 }
 USER_CONFIG
 
-INFRA_DIR="$HOME/Infrastructure/docker"
-SERVICES=(postgres mysql mariadb redis valkey rabbitmq kafka nginx traefik caddy keycloak minio elastic opensearch grafana prometheus loki tempo mailpit selenium)
-
-log_info "Création de la structure ~/Infrastructure/docker/ (un dossier par service)..."
-for service in "${SERVICES[@]}"; do
-    ensure_dir "$INFRA_DIR/$service"
-done
-
-log_info "Création de la structure de volumes persistants (bind-mounts)..."
-for service in "${SERVICES[@]}"; do
-    ensure_dir "$INFRA_DIR/volumes/$service"
-done
-
-log_info "Déploiement du guide d'utilisation ~/Infrastructure/docker/README.md..."
-DOTFILES_DOCKER="$(cd "$SCRIPT_DIR/../../dotfiles/docker" && pwd)"
-ln -sfn "$DOTFILES_DOCKER/README.md" "$INFRA_DIR/README.md"
-ln -sfn "$DOTFILES_DOCKER/docker-compose.yml.example" "$INFRA_DIR/docker-compose.yml.example"
-
 log_info "Redémarrage du service Docker..."
 if command -v systemctl &>/dev/null && systemctl is-systemd-running 2>/dev/null; then
     sudo systemctl enable docker
@@ -63,4 +45,4 @@ fi
 log_info "Création du réseau Docker partagé 'infra'..."
 sudo docker network inspect infra >/dev/null 2>&1 || sudo docker network create infra
 
-log_success "Daemon Docker configuré et arborescence ~/Infrastructure/docker créée avec succès !"
+log_success "Daemon Docker configuré avec succès !"

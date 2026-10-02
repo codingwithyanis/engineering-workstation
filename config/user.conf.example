@@ -6,9 +6,6 @@
 PERSONAL_NAME="Prénom Nom"
 PERSONAL_EMAIL="perso@example.com"
 
-PERSONAL_NAME_2="Prénom Nom Sys"
-PERSONAL_EMAIL_2="perso-sys@example.com"
-
 WORK_NAME="Prénom Nom Work"
 WORK_EMAIL="work@example.com"
 

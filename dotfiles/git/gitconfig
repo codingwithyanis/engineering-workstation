@@ -30,11 +30,14 @@
 [includeIf "gitdir:~/Workspace/personal/"]
     path = ~/.gitconfig-personal
 
-[includeIf "gitdir:~/Workspace/sys/"]
-    path = ~/.gitconfig-sys
-
 [includeIf "gitdir:~/Workspace/work/"]
     path = ~/.gitconfig-work
+
+[includeIf "gitdir:~/Workspace/labs/"]
+    path = ~/.gitconfig-personal
+
+[includeIf "gitdir:~/Workspace/shared/"]
+    path = ~/.gitconfig-personal
 
 # Aliases d'Ingénierie Avancés
 [alias]

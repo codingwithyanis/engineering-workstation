@@ -17,15 +17,7 @@ cat <<EOF > "$GITCONFIG_DIR/.gitconfig-personal"
     signingkey = ~/.ssh/id_ed25519_personal.pub
 EOF
 
-# 2. Profil 2 : Personnel / Sys (Gmail)
-cat <<EOF > "$GITCONFIG_DIR/.gitconfig-sys"
-[user]
-    name = "$PERSONAL_NAME_2"
-    email = $PERSONAL_EMAIL_2
-    signingkey = ~/.ssh/id_ed25519_personal_sys.pub
-EOF
-
-# 3. Profil 3 : Professionnel (OTRIS)
+# 2. Profil 2 : Professionnel
 cat <<EOF > "$GITCONFIG_DIR/.gitconfig-work"
 [user]
     name = "$WORK_NAME"
@@ -33,13 +25,12 @@ cat <<EOF > "$GITCONFIG_DIR/.gitconfig-work"
     signingkey = ~/.ssh/id_ed25519_work.pub
 EOF
 
-log_success "Profils d'identité Personal, Sys et Work générés."
+log_success "Profils d'identité Personal et Work générés."
 
 # 4. Fichier des signataires autorisés (vérification locale des commits signés SSH)
 log_info "Génération de ~/.ssh/allowed_signers (vérification locale des signatures SSH)..."
 {
     echo "$PERSONAL_EMAIL $(awk '{print $1, $2}' ~/.ssh/id_ed25519_personal.pub)"
-    echo "$PERSONAL_EMAIL_2 $(awk '{print $1, $2}' ~/.ssh/id_ed25519_personal_sys.pub)"
     echo "$WORK_EMAIL $(awk '{print $1, $2}' ~/.ssh/id_ed25519_work.pub)"
 } > "$HOME/.ssh/allowed_signers"
 
@@ -55,4 +46,4 @@ ensure_dir "$HOME/.config/git"
 log_info "Déploiement de ~/.config/git/delta.gitconfig (symlink)..."
 ln -sfn "$DOTFILES_GIT/delta.gitconfig" "$HOME/.config/git/delta.gitconfig"
 
-log_success "Fichiers GitConfig configurés avec succès pour Personal, Sys et Work."
+log_success "Fichiers GitConfig configurés avec succès pour Personal et Work."

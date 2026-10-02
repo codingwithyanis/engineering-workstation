@@ -22,8 +22,14 @@ fi
 
 # 2. Lazygit (version fixe depuis versions.conf)
 if ! command_exists lazygit; then
+    case "$(uname -m)" in
+        x86_64) LAZYGIT_ARCH="x86_64" ;;
+        aarch64) LAZYGIT_ARCH="arm64" ;;
+        armv7l) LAZYGIT_ARCH="armv6" ;;
+        *) log_error "Architecture non supportée pour Lazygit : $(uname -m)"; exit 1 ;;
+    esac
     log_info "Installation de Lazygit v${LAZYGIT_VERSION}..."
-    curl -sLo /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    curl -fsSL --proto '=https' --tlsv1.2 -o /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_linux_${LAZYGIT_ARCH}.tar.gz"
     tar -xf /tmp/lazygit.tar.gz -C /tmp lazygit
     sudo install /tmp/lazygit /usr/local/bin/
     rm -f /tmp/lazygit /tmp/lazygit.tar.gz

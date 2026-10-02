@@ -21,7 +21,7 @@ fi
 
 # 2. Control Binaries
 log_info "Contrôle de la disponibilité des binaires..."
-TOOLS=(zsh starship zoxide eza bat rg fd btop jq yq atuin direnv nvim herdr)
+TOOLS=(zsh starship zoxide eza bat rg fd btop atuin direnv nvim herdr)
 for tool in "${TOOLS[@]}"; do
     if command_exists "$tool"; then
         log_success "Binaire OK : $tool"

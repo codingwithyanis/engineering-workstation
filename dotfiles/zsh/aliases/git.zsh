@@ -1,0 +1,12 @@
+# Raccourcis Git
+alias g='git'
+alias gst='git status -sb'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gl='git log --oneline --decorate --graph --all'
+alias ga='git add'
+alias gc='git commit'
+alias gco='git switch'
+alias gcb='git switch -c'
+alias gp='git push'
+alias gpl='git pull --ff-only'

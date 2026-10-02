@@ -10,11 +10,23 @@ WORKSPACE="$HOME/Workspace"
 
 log_info "Création des dossiers sous $WORKSPACE..."
 
-ensure_dir "$WORKSPACE/personal"
-ensure_dir "$WORKSPACE/sys"
-ensure_dir "$WORKSPACE/work"
+for dir in \
+    "$WORKSPACE/personal/projects" \
+    "$WORKSPACE/personal/open-source" \
+    "$WORKSPACE/personal/experiments" \
+    "$WORKSPACE/work/clients" \
+    "$WORKSPACE/work/products" \
+    "$WORKSPACE/work/internal" \
+    "$WORKSPACE/labs/experiments" \
+    "$WORKSPACE/labs/prototypes" \
+    "$WORKSPACE/labs/benchmarks" \
+    "$WORKSPACE/shared/scripts" \
+    "$WORKSPACE/shared/snippets" \
+    "$WORKSPACE/shared/notes"; do
+    ensure_dir "$dir"
+done
 
 log_success "Arborescence Workspace prête :"
 log_info "  📁 $WORKSPACE/personal  -> Identité: Personal ($PERSONAL_EMAIL)"
-log_info "  📁 $WORKSPACE/sys       -> Identité: Personal Sys ($PERSONAL_EMAIL_2)"
 log_info "  📁 $WORKSPACE/work      -> Identité: Work ($WORK_EMAIL)"
+log_info "  📁 $WORKSPACE/labs      -> Identité: Personal ($PERSONAL_EMAIL)"

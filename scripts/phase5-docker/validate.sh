@@ -21,10 +21,16 @@ check_cmd "lazydocker"
 
 if docker compose version &>/dev/null; then
     log_success "OK: docker compose -> $(docker compose version)"
+else
+    log_error "Plugin Docker Compose manquant"
+    exit 1
 fi
 
 if docker buildx version &>/dev/null; then
     log_success "OK: docker buildx -> $(docker buildx version)"
+else
+    log_error "Plugin Docker Buildx manquant"
+    exit 1
 fi
 
 echo ""

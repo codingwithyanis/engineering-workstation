@@ -23,7 +23,7 @@ git clone <url-de-ce-depot> ~/engineering-workstation
 cd ~/engineering-workstation
 
 cp config/user.conf.example config/user.conf
-$EDITOR config/user.conf   # renseigne tes identités (noms, emails perso/sys/travail)
+$EDITOR config/user.conf   # renseigne tes identités (noms et emails personnel/professionnel)
 
 ./bootstrap.sh
 ```
@@ -36,15 +36,15 @@ $EDITOR config/user.conf   # renseigne tes identités (noms, emails perso/sys/tr
 
 | Phase | Dossier | Contenu |
 |---|---|---|
-| 1 — Système & Fondations | `scripts/phase1/` | Audit système, mise à jour APT, dépôt de clés GPG moderne (`/etc/apt/keyrings`), paquets de compilation de base, locale UTF-8, arborescence `~/Workspace` et `~/Infrastructure` |
+| 1 — Système & Fondations | `scripts/phase1/` | Audit système, mise à jour APT, dépôt de clés GPG moderne (`/etc/apt/keyrings`), paquets de compilation de base, locale UTF-8 et arborescence `~/Workspace` |
 | 2 — Shell & Dotfiles | `scripts/phase2-shell/` | Zsh comme shell par défaut, Antidote (plugin manager), Starship (prompt), Atuin (historique), CLI modernes, Neovim (binaire officiel ≥ 0.12, requis par la config `kickstart.nvim`), herdr, déploiement des dotfiles par symlink (zsh, starship, nvim, wezterm) |
-| 3 — Git, SSH & Identités | `scripts/phase3-git/` | Delta, Lazygit, GitHub CLI, 3 identités SSH ed25519 (personnelle / sys / travail) avec config modulaire, résolution automatique de l'identité Git selon le dossier de travail |
+| 3 — Git, SSH & Identités | `scripts/phase3-git/` | Delta, Lazygit, GitHub CLI, 2 identités SSH ed25519 (personnelle / travail) avec config modulaire, résolution automatique de l'identité Git selon le dossier de travail |
 | 4 — Runtimes | `scripts/phase4-runtimes/` | `mise` comme gestionnaire de versions polyglotte, provisionnement déclaratif depuis `config/versions.env`, `tree-sitter-cli` (npm global, requis pour compiler les parsers Neovim) |
-| 5 — Docker & Infrastructure | `scripts/phase5-docker/` | Docker CE, Buildx, Compose, LazyDocker, daemon tuné (BuildKit, log driver local), arborescence pour services auto-hébergés |
+| 5 — Docker | `scripts/phase5-docker/` | Docker CE, Buildx, Compose, LazyDocker et daemon tuné (BuildKit, log driver local) |
 
 ## Outils installés
 
-**Shell & CLI** : zsh, Antidote, Starship, Atuin, ripgrep, fd, bat, eza, zoxide, btop, fastfetch, jq, yq, tree, direnv, fzf, herdr
+**Shell & CLI** : zsh, Antidote, Starship, Atuin, ripgrep, fd, bat, eza, zoxide, btop, fastfetch, tree, direnv, fzf, herdr
 
 **Éditeur** : Neovim (binaire officiel ≥ 0.12, requis par `vim.pack` — voir [Configuration Neovim](#configuration-neovim))
 
@@ -52,17 +52,17 @@ $EDITOR config/user.conf   # renseigne tes identités (noms, emails perso/sys/tr
 
 **Git & VCS** : git, delta, lazygit, gh (GitHub CLI)
 
-**Runtimes** (via `mise`, versions dans `config/versions.env`) : Node.js, pnpm, Bun, Java (Temurin LTS + courant), Maven, Gradle, Python, uv, Rust, Go
+**Runtimes** (via `mise`, versions dans `config/versions.env`) : Node.js LTS, pnpm, Bun, Java (Temurin LTS + courant), Maven, Gradle, PHP, Composer, Python et uv
 
 **Infrastructure** : Docker CE, Buildx, Compose, LazyDocker
 
 ## Identités Git & SSH multiples
 
-Trois identités (personnelle, personnelle-sys, travail) sont configurées de façon isolée :
+Deux identités (personnelle et travail) sont configurées de façon isolée :
 
-- Trois clés SSH dédiées (`~/.ssh/id_ed25519_{personal,personal_sys,work}`), routées via `~/.ssh/config.d/github.conf` (hôtes `github-personal`, `github-sys`, `github-work`, idem GitLab).
-- Trois profils Git (`~/.gitconfig-{personal,sys,work}`) sélectionnés automatiquement selon le dossier via `includeIf "gitdir:"` dans `dotfiles/git/gitconfig`.
-- Il suffit de cloner un projet dans `~/Workspace/personal/`, `~/Workspace/sys/` ou `~/Workspace/work/` pour que l'identité Git correcte s'applique sans configuration manuelle.
+- Deux clés SSH dédiées (`~/.ssh/id_ed25519_{personal,work}`), routées via `~/.ssh/config.d/github.conf` (hôtes `github-personal` et `github-work`, idem GitLab).
+- Deux profils Git (`~/.gitconfig-{personal,work}`) sélectionnés automatiquement selon le dossier via `includeIf "gitdir:"` dans `dotfiles/git/gitconfig`.
+- Il suffit de cloner un projet dans `~/Workspace/personal/`, `~/Workspace/work/` ou `~/Workspace/labs/` pour que l'identité Git correcte s'applique sans configuration manuelle.
 
 La signature des commits se fait via clé SSH (`gpg.format = ssh`), et l'affichage des diffs passe par `delta`.
 
@@ -125,7 +125,7 @@ engineering-workstation/
 │   ├── starship.toml
 │   ├── nvim/                 # init.lua (kickstart.nvim + vim.pack) -> ~/.config/nvim
 │   ├── wezterm/              # wezterm.lua -> ~/.config/wezterm
-│   └── zsh/                  # .zshrc + modules conf.d/*.zsh + alias/*.zsh
+│   └── zsh/                  # .zshrc + configuration Zsh centralisée + aliases/*.zsh
 └── scripts/
     ├── phase1/ ... phase5-docker/
     └── */validate.sh         # Vérification post-installation de chaque phase

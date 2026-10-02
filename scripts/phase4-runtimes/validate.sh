@@ -13,12 +13,12 @@ mise current
 
 echo ""
 log_info "--- Exécution de mise doctor ---"
-mise doctor
+if ! DOCTOR_OUTPUT="$(mise doctor 2>&1)"; then
+    printf '%s\n' "$DOCTOR_OUTPUT"
+    log_error "mise doctor a détecté un problème."
+    exit 1
+fi
+printf '%s\n' "$DOCTOR_OUTPUT"
 
 echo ""
-if mise doctor 2>&1 | grep -q "is not installed"; then
-log_error "Des outils sont encore manquants !"
-exit 1
-else
 log_success "Phase 4 validée avec succès !"
-fi

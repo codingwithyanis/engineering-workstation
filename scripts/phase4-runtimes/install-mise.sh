@@ -15,18 +15,4 @@ else
     log_info "mise déjà présent : $(mise --version)"
 fi
 
-ZSH_CONF_DIR="$HOME/.config/zsh/conf.d"
-ensure_dir "$ZSH_CONF_DIR"
-
-log_info "Configuration de l'activation Zsh..."
-
-cat <<'EOF' > "$ZSH_CONF_DIR/50-mise.zsh"
-# Activation automatique de mise
-if command -v mise &>/dev/null; then
-    eval "$(mise activate zsh)"
-elif [ -f "$HOME/.local/bin/mise" ]; then
-    eval "$("$HOME/.local/bin/mise" activate zsh)"
-fi
-EOF
-
-log_success "Intégration Zsh configurée."
+log_success "mise est prêt ; son activation Zsh est centralisée dans 99-integrations.zsh."
