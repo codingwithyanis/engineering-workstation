@@ -21,4 +21,10 @@ fi
 printf '%s\n' "$DOCTOR_OUTPUT"
 
 echo ""
+log_info "--- Vérification des versions déclarées ---"
+if ! mise install --dry-run-code >/dev/null; then
+    log_error "Des runtimes sont absents ou ne correspondent pas à la configuration."
+    exit 1
+fi
+
 log_success "Phase 4 validée avec succès !"

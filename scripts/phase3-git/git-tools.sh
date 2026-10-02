@@ -10,9 +10,17 @@ log_header "Phase 3.1 - Installation des outils Git (Delta, Lazygit & GitHub CLI
 
 ensure_dir "$HOME/.local/bin"
 
+delta_version() {
+    delta --version 2>/dev/null | sed -n 's/^delta \([0-9][0-9.]*\).*/\1/p' | head -n 1
+}
+
+lazygit_version() {
+    lazygit --version 2>/dev/null | sed -n 's/.*version=\([0-9][0-9.]*\).*/\1/p' | head -n 1
+}
+
 # 1. Delta (version fixe depuis versions.conf)
-if ! command_exists delta; then
-    log_info "Installation de git-delta v${DELTA_VERSION}..."
+if ! command_exists delta || [ "$(delta_version)" != "$DELTA_VERSION" ]; then
+    log_info "Installation/mise à jour de git-delta v${DELTA_VERSION}..."
     DELTA_DEB="git-delta_${DELTA_VERSION}_amd64.deb"
     wget -q "https://github.com/dandavison/delta/releases/download/${DELTA_VERSION}/${DELTA_DEB}" -O "/tmp/${DELTA_DEB}"
     sudo dpkg -i "/tmp/${DELTA_DEB}"
@@ -21,14 +29,14 @@ if ! command_exists delta; then
 fi
 
 # 2. Lazygit (version fixe depuis versions.conf)
-if ! command_exists lazygit; then
+if ! command_exists lazygit || [ "$(lazygit_version)" != "$LAZYGIT_VERSION" ]; then
     case "$(uname -m)" in
         x86_64) LAZYGIT_ARCH="x86_64" ;;
         aarch64) LAZYGIT_ARCH="arm64" ;;
         armv7l) LAZYGIT_ARCH="armv6" ;;
         *) log_error "Architecture non supportée pour Lazygit : $(uname -m)"; exit 1 ;;
     esac
-    log_info "Installation de Lazygit v${LAZYGIT_VERSION}..."
+    log_info "Installation/mise à jour de Lazygit v${LAZYGIT_VERSION}..."
     curl -fsSL --proto '=https' --tlsv1.2 -o /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_linux_${LAZYGIT_ARCH}.tar.gz"
     tar -xf /tmp/lazygit.tar.gz -C /tmp lazygit
     sudo install /tmp/lazygit /usr/local/bin/

@@ -3,8 +3,40 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../../lib/common.sh"
 source "$SCRIPT_DIR/../../config/user.conf"
+source "$SCRIPT_DIR/../../config/versions.conf"
 
 log_header "Phase 3.5 - Validation de la Configuration Multi-Identités"
+
+ERRORS=0
+
+# 0. Vérification des versions des outils Git
+log_info "--- 0. Vérification des outils Git ---"
+check_version() {
+    local command_name="$1"
+    local expected="$2"
+    local actual="$3"
+
+    if ! command_exists "$command_name"; then
+        log_error "Outil manquant : $command_name"
+        ERRORS=$((ERRORS + 1))
+    elif [ "$actual" != "$expected" ]; then
+        log_error "$command_name : version $actual détectée, version $expected requise"
+        ERRORS=$((ERRORS + 1))
+    else
+        log_success "$command_name : version $expected"
+    fi
+}
+
+DELTA_ACTUAL=""
+LAZYGIT_ACTUAL=""
+if command_exists delta; then
+    DELTA_ACTUAL="$(delta --version 2>/dev/null | sed -n 's/^delta \([0-9][0-9.]*\).*/\1/p' | head -n 1)"
+fi
+if command_exists lazygit; then
+    LAZYGIT_ACTUAL="$(lazygit --version 2>/dev/null | sed -n 's/.*version=\([0-9][0-9.]*\).*/\1/p' | head -n 1)"
+fi
+check_version "delta" "$DELTA_VERSION" "$DELTA_ACTUAL"
+check_version "lazygit" "$LAZYGIT_VERSION" "$LAZYGIT_ACTUAL"
 
 # 1. Vérification des clés SSH
 log_info "--- 1. Vérification des clés SSH ---"

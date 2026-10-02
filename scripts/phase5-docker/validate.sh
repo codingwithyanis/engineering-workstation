@@ -2,6 +2,7 @@
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../../lib/common.sh"
+source "$SCRIPT_DIR/../../config/versions.conf"
 
 log_header "Phase 5.3 - Diagnostics Avancés Docker & Outils"
 
@@ -18,6 +19,13 @@ check_cmd() {
 
 check_cmd "docker"
 check_cmd "lazydocker"
+
+LAZYDOCKER_VERSION_ACTUAL="$(lazydocker --version 2>/dev/null | sed -n 's/^Version: //p' | head -n 1)"
+if [ "$LAZYDOCKER_VERSION_ACTUAL" != "$LAZYDOCKER_VERSION" ]; then
+    log_error "lazydocker : version $LAZYDOCKER_VERSION_ACTUAL détectée, version $LAZYDOCKER_VERSION requise"
+    exit 1
+fi
+log_success "OK: lazydocker -> v${LAZYDOCKER_VERSION}"
 
 if docker compose version &>/dev/null; then
     log_success "OK: docker compose -> $(docker compose version)"
